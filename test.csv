@@ -1,0 +1,9 @@
+,기관ID,통계표ID,분류ID,분류명,분류영문명,분류값ID,분류값명,분류값영문명,상위분류값ID,분류값순번
+0,101,DT_1JH20201,ITEM,항목,Item code list,T1,원지수,Original index,,
+1,101,DT_1JH20201,A,산업별 지수,By industry,0,전산업생산지수(농림어업 제외),Index of all industry production,,1
+2,101,DT_1JH20201,A,산업별 지수,By industry,1,전산업생산지수(농림어업 포함),Index of all industry production(excluding Agriculture Forestry and Fishing),,1
+3,101,DT_1JH20201,A,산업별 지수,By industry,1A,농림어업,Agriculture Forestry and Fishing production,1,1
+4,101,DT_1JH20201,A,산업별 지수,By industry,1B,광공업,Industrial production,1,1
+5,101,DT_1JH20201,A,산업별 지수,By industry,1D,건설업,Construction,1,1
+6,101,DT_1JH20201,A,산업별 지수,By industry,1C,서비스업,Service Industry,1,1
+7,101,DT_1JH20201,A,산업별 지수,By industry,1E,공공행정,Public administration,1,1
