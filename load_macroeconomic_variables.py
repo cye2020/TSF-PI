@@ -41,7 +41,7 @@ if __name__ == '__main__':
     m1_data = oecd.get_data(m1_query, 'M1')
     
     # FinanceDataReader를 사용하여 코스피 지수 데이터 가져오기
-    kospi_data = fdr.DataReader('KS11', start_date, end_date)[['Close']]
+    kospi_data = fdr.DataReader('KS11', start_date, end_date)[['Close']].dropna()
     kospi_data.columns = ['Kospi']
     
     # FinanceDataReader를 사용하여 USD/KRW 환율 데이터 가져오기
