@@ -45,7 +45,7 @@ if __name__ == '__main__':
     kospi_data.columns = ['Kospi']
     
     # FinanceDataReader를 사용하여 USD/KRW 환율 데이터 가져오기
-    usd_krw_data = fdr.DataReader('USD/KRW', start_date, end_date)[['Close']]
+    usd_krw_data = fdr.DataReader('USD/KRW', start_date, end_date)[['Close']].dropna()
     usd_krw_data.columns = ['USD/KRW']
     
     # 모든 경제 관련 데이터를 하나의 리스트에 저장
