@@ -69,7 +69,7 @@ if __name__ == '__main__':
     data.loc[data.index >= '2020-01-01', 'disease'] = 1
 
     # 최종 병합된 데이터 저장
-    data.to_csv('kospi.csv')
+    data.to_csv('./data/kospi.csv')
 
 
 
