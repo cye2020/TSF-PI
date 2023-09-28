@@ -1,3 +1,5 @@
+# 전산업지수
+
 
 from PublicDataReader import Kosis
 import pandas as pd
@@ -6,7 +8,8 @@ import pandas as pd
 
 
 # KOSIS 공유서비스 Open API 사용자 인증키
-kosis_service_key = "your_key"
+keys = pd.read_csv('Key.csv', index_col=0)
+kosis_service_key = keys.loc['Kosis', 'Key']
 
 # 인스턴스 생성하기
 kosis_api = Kosis(kosis_service_key)
@@ -36,11 +39,11 @@ df5 = kosis_api.get_data(
     "통계자료",
     orgId = orgId,
     tblId = tblId,
-    itmId = "T1",
+    itmId = "ALL",
     objL1 = "ALL",
     prdSe = "M",
-    startPrdDe='200001',
-    endPrdDe='202308',
+    startPrdDe='20000101',
+    endPrdDe='2024',
     )
 
 print(df5)
