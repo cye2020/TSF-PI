@@ -66,7 +66,7 @@ if __name__ == '__main__':
     data['disease'] = 0  # 모든 행에 대해 초기값을 0으로 설정
 
     # 메르스 유행 기간은 1로 설정
-    data.loc[('2015-07-27' >= data.index) & (data.index >= '2015-05-20'), 'disease'] = 1
+    data.loc[('2015-12-23' >= data.index) & (data.index >= '2015-05-20'), 'disease'] = 1
     
     # COVID-19기간은 1로 설정
     data.loc[('2022-08-31' >= data.index) & (data.index >= '2020-01-20'), 'disease'] = 1
