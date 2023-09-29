@@ -57,4 +57,4 @@ def printResult(test_datelist, test_true, test_forecast, target, features):
         errorRate = round(abs(printTrue - printForecast) / printTrue * 100, 2)
         print('[{0}년 {1}월] | 실제 코스피 지수: {2}원    | 예상 코스피 지수: {3}원       | 차이: {4}원       | 절대 오차율: {5}%'.format(printYear, printMonth, printTrue, printForecast, printDiff, errorRate))
         errorRates.append(errorRate)
-    print(round(sum(errorRates)/len(errorRate, 2)))
+    print(round(sum(errorRates)/len(errorRates), 2))
