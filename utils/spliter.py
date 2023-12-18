@@ -24,7 +24,7 @@ class WindowGenerator:
         for idx in range(len(self.data)-self.total_window_size+1):
             _x.append(self.data[self.input_indices + idx])
             _y.append(self.label_data[self.label_indices + idx])
-        return np.array(_x), np.array(_y)
+        return np.array(_x).transpose((0, 2, 1)), np.array(_y)
 
     def to_pandas(self, data, date_list, name="value"):
         df = pd.DataFrame(data, columns=[name]).set_index(pd.Series(date_list[self.total_window_size:]))

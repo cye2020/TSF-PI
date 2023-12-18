@@ -3,7 +3,7 @@ from datetime import datetime
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 
-class DataLoader:
+class CustomDataLoader:
     def __init__(self):
         self.original = None  # Original data
         self._scaler = None  # Scaling Inst
