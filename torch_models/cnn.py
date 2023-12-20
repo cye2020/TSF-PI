@@ -44,7 +44,16 @@ class CNN(nn.Module):
         fc_input_size = x.size(1)
     
         # Then use this value to initialize the first fully connected layer
-        self.fcs.insert(0, nn.Linear(fc_input_size, self.fc_layers[0]['output_size']).to(device))
+        fc_layer = self.fc_layers[0]
+        
+        first_fc_layer = nn.Linear(fc_input_size, fc_layer['output_size']).to(device)
+        first_dropout_rate = nn.Dropout(fc_layer['dropout_rate']) if 'dropout_rate' in fc_layer else None
+        first_activation = None if 'activation' not in fc_layer else nn.ReLU() if fc_layer['activation'] == 'relu' else nn.Linear()
+        
+        self.fcs.insert(0, first_fc_layer)
+        self.dropouts.insert(0, first_dropout_rate)
+        self.fc_activations.insert(0, first_activation)
+
     
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
             fc = fc.to(device)
