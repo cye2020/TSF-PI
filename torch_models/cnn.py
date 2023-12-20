@@ -5,7 +5,9 @@ import torch.nn.functional as F
 class CNN(nn.Module):
     def __init__(self, conv_layers, fc_layers):
         super(CNN, self).__init__()
-
+        self.conv_layers = conv_layers
+        self.fc_layers = fc_layers
+        
         self.convs = nn.ModuleList()
         self.pools = nn.ModuleList()
         self.activations = nn.ModuleList()
