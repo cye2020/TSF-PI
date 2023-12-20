@@ -47,6 +47,7 @@ class CNN(nn.Module):
         self.fcs.insert(0, nn.Linear(fc_input_size, self.fc_layers[0]['output_size']))
     
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
+            fc = fc.to(device)
             if hasattr(fc, 'weight'):
                 print(f'Layer: {fc}, Weight device: {fc.weight.device}')
             if hasattr(fc, 'bias'):
