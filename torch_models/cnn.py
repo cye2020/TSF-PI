@@ -50,7 +50,7 @@ class CNN(nn.Module):
             fc = fc.to(device)
             x = fc(x)
             
-            if fc is not None:
+            if activation is not None:
                 x = activation(x)
             
             if dropout is not None:
