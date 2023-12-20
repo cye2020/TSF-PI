@@ -37,7 +37,6 @@ class CNN(nn.Module):
         for conv, pool, activation in zip(self.convs, self.pools, self.activations):
             x = activation(conv(x))
             x = pool(x)
-            print(f"Conv Layer: {x.device}")
 
         x = self.flatten(x)
 
@@ -48,9 +47,12 @@ class CNN(nn.Module):
         self.fcs.insert(0, nn.Linear(fc_input_size, self.fc_layers[0]['output_size']))
     
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
+            if hasattr(fc, 'weight'):
+                print(f'Layer: {fc}, Weight device: {fc.weight.device}')
+            if hasattr(fc, 'bias'):
+                print(f'Layer: {fc}, Bias device: {fc.bias.device}')
             x = activation(fc(x))
             x = dropout(x)
-            print(f"FC Layer: {x.device}")
 
         x = self.out(x)
         return x
