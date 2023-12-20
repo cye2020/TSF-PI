@@ -49,10 +49,10 @@ class CNN(nn.Module):
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
             fc = fc.to(device)
             
-            if fc:
+            if fc is not None:
                 x = activation(fc(x))
             
-            if dropout:
+            if dropout is not None:
                 x = dropout(x)
 
         x = self.out(x)
