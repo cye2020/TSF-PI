@@ -34,7 +34,6 @@ class CNN(nn.Module):
         self.out = nn.Linear(fc_layers[-1]['output_size'], 1)
 
     def forward(self, x):
-        x = x.to(device)
         for conv, pool, activation in zip(self.convs, self.pools, self.activations):
             x = activation(conv(x))
             x = pool(x)
