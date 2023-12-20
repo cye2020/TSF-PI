@@ -19,7 +19,7 @@ class CNN(nn.Module):
         self.fcs = nn.ModuleList()
         self.dropouts = nn.ModuleList()
         self.fc_activations = nn.ModuleList()
-        for fc_layer in fc_layers:
+        for fc_layer in fc_layers[1:]:
             self.fcs.append(nn.Linear(fc_layer['input_size'], fc_layer['output_size']))
             self.dropouts.append(nn.Dropout(fc_layer['dropout_rate']))
             self.fc_activations.append(nn.ReLU() if fc_layer['activation'] == 'relu' else nn.Linear())
@@ -33,6 +33,12 @@ class CNN(nn.Module):
 
         x = self.flatten(x)
 
+        # Calculate the input size for the first fully connected layer
+        fc_input_size = x.size(1)
+    
+        # Then use this value to initialize the first fully connected layer
+        self.fcs.insert(0, nn.Linear(fc_input_size, self.fc_layers[0]['output_size']))
+    
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
             x = activation(fc(x))
             x = dropout(x)
@@ -47,7 +53,7 @@ conv_layers = [
 
 fc_layers = [
     {'input_size': None, 'output_size': 100, 'activation': 'relu', 'dropout_rate': 0.25},
-    {'input_size': 100, 'output_size': 30, 'activation': 'linear'}
+    {'input_size': 100, 'output_size': 30}
 ]
 
 
