@@ -47,9 +47,10 @@ class CNN(nn.Module):
         self.fcs.insert(0, nn.Linear(fc_input_size, self.fc_layers[0]['output_size']))
     
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
+            fc = fc.to(device)
             x = fc(x)
             
-            if activation is not None:
+            if fc is not None:
                 x = activation(x)
             
             if dropout is not None:
