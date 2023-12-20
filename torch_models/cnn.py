@@ -48,12 +48,12 @@ class CNN(nn.Module):
     
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
             fc = fc.to(device)
-            if hasattr(fc, 'weight'):
-                print(f'Layer: {fc}, Weight device: {fc.weight.device}')
-            if hasattr(fc, 'bias'):
-                print(f'Layer: {fc}, Bias device: {fc.bias.device}')
-            x = activation(fc(x))
-            x = dropout(x)
+            
+            if fc:
+                x = activation(fc(x))
+            
+            if dropout:
+                x = dropout(x)
 
         x = self.out(x)
         return x
