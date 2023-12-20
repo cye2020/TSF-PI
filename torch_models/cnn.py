@@ -18,8 +18,6 @@ class CNN(nn.Module):
             self.pools.append(nn.MaxPool1d(conv_layer['pool_size']))
             self.activations.append(nn.ReLU() if conv_layer['activation'] == 'relu' else nn.Linear())
 
-        # Set the device for convolutional activations
-        self.activations.to(device)
         self.flatten = nn.Flatten()
         
         self.fcs = nn.ModuleList()
@@ -33,9 +31,6 @@ class CNN(nn.Module):
             else:
                 self.fc_activations.append(None)
 
-        # Set the device for fully connected activations
-        self.fc_activations.to(device)
-        
         self.out = nn.Linear(fc_layers[-1]['output_size'], 1)
 
     def forward(self, x):
@@ -52,7 +47,7 @@ class CNN(nn.Module):
         self.fcs.insert(0, nn.Linear(fc_input_size, self.fc_layers[0]['output_size']))
     
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
-            x = activation(fc(x))
+            x = activation(fc(x.to(device)))
             x = dropout(x)
 
         x = self.out(x)
