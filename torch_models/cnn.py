@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 class CNN(nn.Module):
     def __init__(self, conv_layers, fc_layers):
         super(CNN, self).__init__()
@@ -32,6 +34,7 @@ class CNN(nn.Module):
         self.out = nn.Linear(fc_layers[-1]['output_size'], 1)
 
     def forward(self, x):
+        x = x.to(device)
         for conv, pool, activation in zip(self.convs, self.pools, self.activations):
             x = activation(conv(x))
             x = pool(x)
