@@ -21,8 +21,11 @@ class CNN(nn.Module):
         self.fc_activations = nn.ModuleList()
         for fc_layer in fc_layers[1:]:
             self.fcs.append(nn.Linear(fc_layer['input_size'], fc_layer['output_size']))
-            self.dropouts.append(nn.Dropout(fc_layer['dropout_rate']))
-            self.fc_activations.append(nn.ReLU() if fc_layer['activation'] == 'relu' else nn.Linear())
+            self.dropouts.append(nn.Dropout(fc_layer['dropout_rate']) if 'dropout_rate' in fc_layer else None)
+            if 'activation' in fc_layer:
+                self.fc_activations.append(nn.ReLU() if fc_layer['activation'] == 'relu' else nn.Linear())
+            else:
+                self.fc_activations.append(None)
 
         self.out = nn.Linear(fc_layers[-1]['output_size'], 1)
 
