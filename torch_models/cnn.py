@@ -58,8 +58,7 @@ class CNN(nn.Module):
         x = self.flatten(x)
 
         for fc, dropout, activation in zip(self.fcs, self.dropouts, self.fc_activations):
-            fc = fc.to(device)
-            
+
             x = fc(x)
             
             if activation:
