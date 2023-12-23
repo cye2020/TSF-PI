@@ -21,13 +21,13 @@ class CustomDataLoader:
         train = df.loc[:split_date].copy()
         test = df.loc[split_date:].copy()
 
+        train.drop('Date', axis=1, inplace=True)
+        test.drop('Date', axis=1, inplace=True)
+
         datelist_train = list(train['Date'])
         datelist_train = [datetime.strptime(date, '%Y-%m-%d').date() for date in datelist_train]
         datelist_test = list(test['Date'])
         datelist_test = [datetime.strptime(date, '%Y-%m-%d').date() for date in datelist_test]
-
-        train.drop('Date', axis=1, inplace=True)
-        test.drop('Date', axis=1, inplace=True)
 
         train = train.astype(float)
         test = test.astype(float)
