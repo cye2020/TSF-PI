@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torchsummary import summary
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -74,19 +76,20 @@ class CNN(nn.Module):
 
 
 
-# input_shape = (channel, length)
-conv_layers = [
-    {'input_shape': (7, 30), 'output_channels': 64, 'kernel_size': 2, 'pool_size': 2, 'activation': 'relu'}
-]
+if __name__ =='__main__':
+    # input_shape = (channel, length)
+    conv_layers = [
+        {'input_shape': (7, 30), 'output_channels': 64, 'kernel_size': 2, 'pool_size': 2, 'activation': 'relu'}
+    ]
 
-fc_layers = [
-    {'input_size': None, 'output_size': 100, 'activation': 'relu', 'dropout_rate': 0.25},
-    {'input_size': 100, 'output_size': 30}
-]
-
-
-model = CNN(conv_layers, fc_layers)
+    fc_layers = [
+        {'input_size': None, 'output_size': 100, 'activation': 'relu', 'dropout_rate': 0.25},
+        {'input_size': 100, 'output_size': 30}
+    ]
 
 
-from torchsummary import summary
-summary(model, (7, 30), device='cuda' if torch.cuda.is_available() else 'cpu')
+    model = CNN(conv_layers, fc_layers)
+
+
+
+    summary(model, (7, 30), device='cuda' if torch.cuda.is_available() else 'cpu')
