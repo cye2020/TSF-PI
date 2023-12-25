@@ -61,10 +61,10 @@ class CNN(nn.Module):
 
             x = fc(x)
             
-            if activation:
+            if isinstance(activation, nn.Module):
                 x = activation(x)
             
-            if dropout:
+            if isinstance(dropout, nn.Module):
                 x = dropout(x)
 
         x = self.out(x)
