@@ -14,7 +14,6 @@ class CNN(nn.Module):
         self.pools = nn.ModuleList()
         self.activations = nn.ModuleList()
         
-        output_size = None
         for conv_layer in conv_layers:
             input_channels, input_length = conv_layer['input_shape']
             output_channels = conv_layer['output_channels']
@@ -26,10 +25,10 @@ class CNN(nn.Module):
             self.pools.append(nn.MaxPool1d(pool_size))
             self.activations.append(nn.ReLU() if activation == 'relu' else nn.Linear())
             
-            conv_output_length = ((input_length - kernel_size) / 1) + 1  # stride is assumed to be 1
-            pool_output_length = conv_output_length // pool_size
+        conv_output_length = ((input_length - kernel_size) / 1) + 1  # stride is assumed to be 1
+        pool_output_length = conv_output_length // pool_size
 
-            output_size = output_channels * int(pool_output_length)
+        output_size = output_channels * int(pool_output_length)
 
         self.flatten = nn.Flatten()
         fc_layers[0]['input_size'] = output_size
