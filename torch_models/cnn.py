@@ -53,11 +53,9 @@ class CNN(nn.Module):
 
 
     def forward(self, x):
-        print(x.shape)
         for conv, pool, activation in zip(self.convs, self.pools, self.activations):
             x = activation(conv(x))
             x = pool(x)
-            print(x.shape)
 
         x = self.flatten(x)
 
