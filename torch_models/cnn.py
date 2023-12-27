@@ -7,15 +7,17 @@ from torchsummary import summary
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class CNN(nn.Module):
-    def __init__(self, conv_layers, fc_layers):
+    def __init__(self, input_shape, conv_layers, fc_layers):
         super(CNN, self).__init__()
         
         self.convs = nn.ModuleList()
         self.pools = nn.ModuleList()
         self.activations = nn.ModuleList()
         
+        input_length = input_shape[1]
+        
         for conv_layer in conv_layers:
-            input_channels, input_length = conv_layer['input_shape']
+            input_channels = conv_layer['input_channels']
             output_channels = conv_layer['output_channels']
             kernel_size = conv_layer['kernel_size']
             pool_size = conv_layer['pool_size']
@@ -25,10 +27,12 @@ class CNN(nn.Module):
             self.pools.append(nn.MaxPool1d(pool_size))
             self.activations.append(nn.ReLU() if activation == 'relu' else nn.Linear())
             
-        conv_output_length = ((input_length - kernel_size) / 1) + 1  # stride is assumed to be 1
-        pool_output_length = conv_output_length // pool_size
+            conv_output_length = ((input_length - kernel_size) / 1) + 1  # stride is assumed to be 1
+            pool_output_length = conv_output_length // pool_size
 
-        output_size = output_channels * int(pool_output_length)
+            output_size = output_channels * int(pool_output_length)
+            
+            input_length = pool_output_length
 
         self.flatten = nn.Flatten()
         fc_layers[0]['input_size'] = output_size
@@ -49,9 +53,11 @@ class CNN(nn.Module):
 
 
     def forward(self, x):
+        print(x.shape)
         for conv, pool, activation in zip(self.convs, self.pools, self.activations):
             x = activation(conv(x))
             x = pool(x)
+            print(x.shape)
 
         x = self.flatten(x)
 
@@ -70,9 +76,11 @@ class CNN(nn.Module):
 
 
 if __name__ =='__main__':
-    # input_shape = (channel, length)
+    input_shape = (7, 30)
+    
     conv_layers = [
-        {'input_shape': (7, 30), 'output_channels': 64, 'kernel_size': 2, 'pool_size': 2, 'activation': 'relu'}
+        {'input_channels': 7, 'output_channels': 64, 'kernel_size': 2, 'pool_size': 2, 'activation': 'relu'},
+        {'input_channels': 64, 'output_channels': 32, 'kernel_size': 2, 'pool_size': 2, 'activation': 'relu'},
     ]
 
     fc_layers = [
@@ -81,7 +89,7 @@ if __name__ =='__main__':
     ]
 
 
-    model = CNN(conv_layers, fc_layers)
+    model = CNN(input_shape, conv_layers, fc_layers)
 
 
 
