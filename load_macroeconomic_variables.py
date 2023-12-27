@@ -10,7 +10,7 @@ from macroeconomic_variables import world_bank as wb
 if __name__ == '__main__':
     # 데이터를 가져올 시작 날짜와 종료 날짜 설정
     start_date = datetime(2010, 1, 1)
-    end_date = datetime(2023, 1, 1)
+    end_date = datetime.today()
     
     # World Bank에서 GDP 데이터 가져오기
     dataset = "NY.GDP.MKTP.CD"
