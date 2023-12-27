@@ -18,17 +18,19 @@ class CNN(nn.Module):
             kernel_size = conv_layer['kernel_size']
             pool_size = conv_layer['pool_size']
             activation = conv_layer['activation']
-            
-            modules.append(nn.Conv1d(input_channels, output_channels, kernel_size))
+            stride = conv_layer['stride']
+                    
+            modules.append(nn.Conv1d(input_channels, output_channels, kernel_size, stride))
             modules.append(nn.ReLU() if activation == 'relu' else nn.Linear())
             modules.append(nn.MaxPool1d(pool_size))
-            
-            conv_output_length = ((input_length - kernel_size) / 1) + 1  # stride is assumed to be 1
+                    
+            conv_output_length = ((input_length - kernel_size) / stride) + 1
             pool_output_length = conv_output_length // pool_size
 
             output_size = output_channels * int(pool_output_length)
-            
+                    
             input_length = pool_output_length
+
 
         modules.append(nn.Flatten())
         fc_layers[0]['input_size'] = output_size
@@ -57,8 +59,8 @@ if __name__ =='__main__':
     input_shape = (7, 30)
     
     conv_layers = [
-        {'input_channels': 7, 'output_channels': 64, 'kernel_size': 2, 'pool_size': 2, 'activation': 'relu'},
-        {'input_channels': 64, 'output_channels': 32, 'kernel_size': 2, 'pool_size': 2, 'activation': 'relu'},
+        {'input_channels': 7, 'output_channels': 64, 'kernel_size': 2, 'pool_size': 2, 'stride': 1 , 'activation': 'relu'},
+        {'input_channels': 64, 'output_channels': 32, 'kernel_size': 2, 'pool_size': 2, 'stride': 1, 'activation': 'relu'},
     ]
 
     fc_layers = [
