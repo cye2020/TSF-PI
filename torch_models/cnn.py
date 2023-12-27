@@ -48,7 +48,6 @@ class CNN(nn.Module):
             self.dropouts.append(dropout)
             self.fc_activations.append(activation)
 
-        self.out = nn.Linear(fc_layers[-1]['output_size'], 1)
 
     def forward(self, x):
         for conv, pool, activation in zip(self.convs, self.pools, self.activations):
@@ -67,7 +66,6 @@ class CNN(nn.Module):
             if isinstance(dropout, nn.Module):
                 x = dropout(x)
 
-        x = self.out(x)
         return x
 
 
