@@ -35,7 +35,6 @@ class RNN(nn.Module):
                 modules.append(nn.Dropout(dropout))
 
         self.layers = nn.Sequential(*modules)
-        print(self)
 
     def get_activation(self, activation):
         if activation == 'relu':
@@ -51,10 +50,8 @@ class RNN(nn.Module):
         for i, layer in enumerate(self.layers):
             if isinstance(layer, nn.LSTM):
                 x, _ = layer(x)
-                print(x.shape)
             else:
                 x = layer(x)
-                print(x.shape)
         return x
 
 
