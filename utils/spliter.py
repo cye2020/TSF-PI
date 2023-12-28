@@ -18,7 +18,7 @@ class WindowGenerator:
         self.labels_slice = slice(self.label_start, None)
         self.label_indices = np.arange(self.total_window_size)[self.labels_slice]
 
-    def split_window(self, shape=(0, 0, 0)):
+    def split_window(self, shape=(0, 1, 2)):
         _x = []
         _y = []
         for idx in range(len(self.data)-self.total_window_size+1):
