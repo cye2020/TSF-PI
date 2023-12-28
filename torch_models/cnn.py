@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from torchsummary import summary
+from torchinfo import summary
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -39,13 +39,13 @@ class CNN(nn.Module):
             input_size = fc_layer['input_size']
             output_size = fc_layer['output_size']
             activation = None if 'activation' not in fc_layer else nn.ReLU() if fc_layer['activation'] == 'relu' else nn.Linear()
-            dropout_rate = fc_layer.get('dropout_rate', 0)
+            dropout = fc_layer.get('dropout', 0)
             
             modules.append(nn.Linear(input_size, output_size))
             if activation is not None:
                 modules.append(activation)
-            if dropout_rate > 0:
-                modules.append(nn.Dropout(dropout_rate))
+            if dropout > 0:
+                modules.append(nn.Dropout(dropout))
 
         self.layers = nn.Sequential(*modules)
 
@@ -64,7 +64,7 @@ if __name__ =='__main__':
     ]
 
     fc_layers = [
-        {'input_size': None, 'output_size': 100, 'activation': 'relu', 'dropout_rate': 0.25},
+        {'input_size': None, 'output_size': 100, 'activation': 'relu', 'dropout': 0.25},
         {'input_size': 100, 'output_size': 30}
     ]
 
@@ -73,4 +73,4 @@ if __name__ =='__main__':
 
 
 
-    summary(model, (7, 30), device='cuda' if torch.cuda.is_available() else 'cpu')
+    summary(model, (1, 7, 30), device='cuda' if torch.cuda.is_available() else 'cpu')
