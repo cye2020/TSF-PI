@@ -19,10 +19,14 @@ class RNN(nn.Module):
 
         output_size = hidden_size * 2  # Bi-directional LSTM doubles the output size
 
+        modules.append(nn.Linear(output_size, fc_layers[0]['output_size']))
+        activation = None if 'activation' not in fc_layers[0] else self.get_activation(fc_layers[0]['activation'])
+        modules.append(nn.Dropout(dropout))
+        
         modules.append(nn.Flatten())
-        fc_layers[0]['input_size'] = output_size * input_length
+        fc_layers[1]['input_size'] = fc_layers[0]['output_size'] * input_length
 
-        for fc_layer in fc_layers:
+        for fc_layer in fc_layers[1:]:
             input_size = fc_layer['input_size']
             output_size = fc_layer['output_size']
             activation = None if 'activation' not in fc_layer else self.get_activation(fc_layer['activation'])
@@ -70,16 +74,16 @@ if __name__ == '__main__':
             'hidden_size': 64,
             'dropout': 0.25
         },
-        {
-            'input_size': 128,  # 64 * 2 (Bi-directional LSTM)
-            'hidden_size': 32,
-            'dropout': 0.25
-        },
-        {
-            'input_size': 64,  # 64 * 2 (Bi-directional LSTM)
-            'hidden_size': 16,
-            'dropout': 0.25
-        }
+        # {
+        #     'input_size': 128,  # 64 * 2 (Bi-directional LSTM)
+        #     'hidden_size': 32,
+        #     'dropout': 0.25
+        # },
+        # {
+        #     'input_size': 64,  # 64 * 2 (Bi-directional LSTM)
+        #     'hidden_size': 16,
+        #     'dropout': 0.25
+        # }
     ]
 
     # Fully connected layers
