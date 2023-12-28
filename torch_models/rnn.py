@@ -15,7 +15,7 @@ class RNN(nn.Module):
             hidden_size = lstm_layer['hidden_size']
             dropout = lstm_layer.get('dropout', 0)
 
-            modules.append(nn.LSTM(input_size, hidden_size, dropout=dropout, bidirectional=True))
+            modules.append(nn.LSTM(input_size, hidden_size, dropout=dropout, num_layers=(1+(dropout>0)), bidirectional=True))
 
         output_size = hidden_size * 2  # Bi-directional LSTM doubles the output size
 
