@@ -6,18 +6,34 @@ Unit: USD Billion
 import wbdata
 from datetime import datetime
 import pandas as pd
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
-
+class WbError(Exception):
+    """
+    Handle Loading World Bank data Exceptions
+    """
+    def __init__(self, msg=''):
+        self.msg = msg
+        _logger.error(msg)
+    
+    def __str__(self):
+        return self.msg
 
 
     
 def get_data(dataset: str, start_date: datetime, end_date: datetime, name: str = 'Value'):
     wb = wbdata.get_data(dataset, country=('KOR'), data_date=(start_date, end_date))
-
     data_list = []
     
     for entry in wb:
+        try:
+            if entry['value'] == None:
+                raise WbError(f"No GDP for {entry['date']}")
+        except WbError:
+            continue
         df = pd.DataFrame({'Date': [datetime.strptime(entry['date'], '%Y')], name: [round(entry['value']/1000000000,2)]})
         data_list.append(df)
     
