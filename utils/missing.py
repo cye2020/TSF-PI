@@ -22,7 +22,7 @@ def fill_missing_dates(data: pd.DataFrame):
         missing_df[col] = np.nan
     data = pd.concat([data, missing_df], ignore_index=True).sort_values('Date').reset_index(drop=True)
     
-    return data
+    return missing_dates, data
 
 
 def get_missing_dates(data: pd.DataFrame):
