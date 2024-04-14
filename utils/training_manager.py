@@ -3,7 +3,7 @@ from ignite.metrics import Accuracy, Loss, Precision, Recall
 from ignite.handlers import EarlyStopping, LinearCyclicalScheduler, ModelCheckpoint, global_step_from_engine
 
 class TrainingManager:
-    def __init__(self, model, optimizer, criterion, device, train_loader, val_loader, epochs, lr):
+    def __init__(self, model, optimizer, criterion, device, train_loader, val_loader, epochs, lr, name='best_model'):
         self.model = model
         self.optimizer = optimizer
         self.criterion = criterion
@@ -12,6 +12,7 @@ class TrainingManager:
         self.val_loader = val_loader
         self.epochs = epochs
         self.lr = lr
+        self.name = name
 
         self.setup_metrics()
         self.setup_trainer()
@@ -65,7 +66,7 @@ class TrainingManager:
 
         self.best_model_saver = ModelCheckpoint(
             dirname='saved_models',
-            filename_prefix='cnn',
+            filename_prefix=self.name,
             n_saved=1,
             create_dir=True,
             require_empty=False,
