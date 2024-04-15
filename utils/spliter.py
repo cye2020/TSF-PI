@@ -22,7 +22,7 @@ class WindowGenerator:
         _x = []
         _y = []
         for idx in range(len(self.data)-self.total_window_size+1):
-            _x.append(self.data[:, 1:][self.input_indices + idx])
+            _x.append(self.data[self.input_indices + idx])
             _y.append(self.label_data[self.label_indices + idx])
         return np.array(_x).transpose(shape), np.array(_y)
 
