@@ -1,4 +1,3 @@
-from itertools import accumulate
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import pandas as pd
 
@@ -56,9 +55,4 @@ class ProphetDataLoader:
     def inverseScale(self, data: pd.DataFrame, column_name: str):
         inverse_data = self.scaler.inverse_transform(data[column_name].values)
         return inverse_data
-
-
-
-def change2close(last_close, changes):
-    return list(accumulate([last_close] + changes, lambda x, y: round(x * (1 + y / 100), 2)))[1:]
 
