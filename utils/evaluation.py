@@ -96,6 +96,25 @@ def SMAPE(true, predict):
     """
     denominator = np.mean(np.abs(true) + np.abs(predict))
     return np.mean(np.abs(true - predict) / denominator) * 200
+
+
+def evaluate(true, predict) -> dict:
+    metrics = {}
+    mse = MSE(true, predict)
+    mae = MAE(true, predict)
+    rmse = RMSE(true, predict)
+    max_ae = MAX_AE(true, predict)
+    r2 = R2(true, predict)
+    mape = MAPE(true, predict)
+    smape = SMAPE(true, predict)
+    metrics['MSE'] = [round(mse, 2)]
+    metrics['MAE'] = [round(mae, 2)]
+    metrics['RMSE'] = [round(rmse, 2)]
+    metrics['MAX_AE'] = [round(max_ae, 2)]
+    metrics['R2'] = [round(r2, 2)]
+    metrics['MAPE'] = [round(mape, 2)]
+    metrics['SMAPE'] = [round(smape, 2)]
+    return metrics
 #===================================================================
 
 
