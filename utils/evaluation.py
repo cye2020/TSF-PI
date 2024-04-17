@@ -2,6 +2,103 @@ import numpy as np
 import keras
 from datetime import datetime
 
+
+#===============================================================
+def MSE(true, predict):
+    """
+    평균 제곱 오차 (MSE) 계산 함수
+
+    Args:
+        true: 실제 주가 데이터 (numpy array)
+        predict: 예측 주가 데이터 (numpy array)
+
+    Returns:
+        평균 제곱 오차 (float)
+    """
+    return np.mean((true - predict)**2)
+
+def MAE(true, predict):
+    """
+    평균 절대 오차 (MAE) 계산 함수
+
+    Args:
+        true: 실제 주가 데이터 (numpy array)
+        predict: 예측 주가 데이터 (numpy array)
+
+    Returns:
+        평균 절대 오차 (float)
+    """
+    return np.mean(np.abs(true - predict))
+
+def RMSE(true, predict):
+    """
+    루트 평균 제곱 오차 (RMSE) 계산 함수
+
+    Args:
+        true: 실제 주가 데이터 (numpy array)
+        predict: 예측 주가 데이터 (numpy array)
+
+    Returns:
+        루트 평균 제곱 오차 (float)
+    """
+    return np.sqrt(MSE(true, predict))
+
+def MAX_AE(true, predict):
+    """
+    최대 절대 오차 (MAX_AE) 계산 함수
+
+    Args:
+        true: 실제 주가 데이터 (numpy array)
+        predict: 예측 주가 데이터 (numpy array)
+
+    Returns:
+        최대 절대 오차 (float)
+    """
+    return np.max(np.abs(true - predict))
+
+def R2(true, predict):
+    """
+    결정 계수 (R^2) 계산 함수
+
+    Args:
+        true: 실제 주가 데이터 (numpy array)
+        predict: 예측 주가 데이터 (numpy array)
+
+    Returns:
+        결정 계수 (float)
+    """
+    return 1 - np.sum((true - predict)**2) / np.sum((true - np.mean(true))**2)
+
+def MAPE(true, predict):
+    """
+    평균 절대 백분율 오차 (MAPE) 계산 함수
+
+    Args:
+        true: 실제 주가 데이터 (numpy array)
+        predict: 예측 주가 데이터 (numpy array)
+
+    Returns:
+        평균 절대 백분율 오차 (float)
+    """
+    return np.mean(np.abs((true - predict) / true)) * 100
+
+
+def SMAPE(true, predict):
+    """
+    SMAPE (Symmetric Mean Absolute Percentage Error) 계산 함수
+
+    Args:
+        true: 실제 주가 데이터 (numpy array)
+        predict: 예측 주가 데이터 (numpy array)
+
+    Returns:
+        SMAPE (float)
+    """
+    denominator = np.mean(np.abs(true) + np.abs(predict))
+    return np.mean(np.abs(true - predict) / denominator) * 200
+#===================================================================
+
+
 def MSEs(true, predict):
     return np.average((true- predict)**2)
 
