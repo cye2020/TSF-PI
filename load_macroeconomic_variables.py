@@ -1,6 +1,6 @@
 # 필요한 라이브러리와 모듈을 가져옴
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import FinanceDataReader as fdr
 from macroeconomic_variables import oecd, kosis, OecdQuery
 from macroeconomic_variables import imf
@@ -28,7 +28,13 @@ if __name__ == '__main__':
     countries = ['KOR']
     periods = [str(end_date.year)]
     gdp_predict = imf.get_data(indicators=indicators, countries=countries, periods=periods)['KOR']
-    gdp_predict['GDP'] = gdp_predict['GDP'].apply(lambda x: round(x / 4, 2)) # 연도 -> 분기로 나눔
+    gdp_predict['GDP'] = gdp_predict['GDP'].apply(lambda x: round(x / 4, 2)) # 연도 -> 분기로
+    
+    # GDP 예상 처음 날짜 조정 (이미 1분기가 지난 경우를 위해)
+    predict_start_date = max(gdp_predict.index[0], gdp_data.index[-1] + timedelta(days=1))
+    idx = list(gdp_predict.index)
+    idx[0] = predict_start_date
+    gdp_predict.index = idx
     
     # GDP 데이터 합치기
     gdp_data = pd.concat([gdp_data, gdp_predict])
