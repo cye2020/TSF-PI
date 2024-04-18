@@ -2,8 +2,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
 import FinanceDataReader as fdr
-from macroeconomic_variables import oecd, kosis, OecdQuery
-from macroeconomic_variables import imf
+from macroeconomic_variables import oecd, kosis, OecdQuery, imf
 
 
 # 주 실행 스크립트 시작점
@@ -61,7 +60,7 @@ if __name__ == '__main__':
     
     # FinanceDataReader를 사용하여 코스피 지수 데이터 가져오기
     kospi_data = fdr.DataReader('KS11', start_date, end_date)[['Close']].dropna()
-    kospi_data.columns = ['Kospi']
+    kospi_data.columns = ['KOSPI']
     
     # FinanceDataReader를 사용하여 USD/KRW 환율 데이터 가져오기
     usd_krw_data = fdr.DataReader('USD/KRW', start_date, end_date)[['Close']].dropna()
@@ -81,20 +80,19 @@ if __name__ == '__main__':
             direction='backward'
         )
 
-    # disease: COVID-19 변수 추가
-    data['disease'] = 0  # 모든 행에 대해 초기값을 0으로 설정
+    # Disease: COVID-19 변수 추가
+    data['Disease'] = 0  # 모든 행에 대해 초기값을 0으로 설정
 
     # 메르스 유행 기간은 1로 설정
-    data.loc[('2015-12-23' >= data.index) & (data.index >= '2015-05-20'), 'disease'] = 1
+    data.loc[('2015-12-23' >= data.index) & (data.index >= '2015-05-20'), 'Disease'] = 1
     
     # COVID-19기간은 1로 설정
-    data.loc[('2022-08-31' >= data.index) & (data.index >= '2020-01-20'), 'disease'] = 1
+    data.loc[('2022-08-31' >= data.index) & (data.index >= '2020-01-20'), 'Disease'] = 1
     
 
     # 최종 병합된 데이터 저장
     data.to_csv('./data/kospi.csv')
 
-
-
-
+    monthly_data = data.resample('MS').first()
+    monthly_data.to_csv('./data/monthly_kospi.csv')
 
