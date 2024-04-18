@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime
 import FinanceDataReader as fdr
 from macroeconomic_variables import oecd, kosis, OecdQuery
-from macroeconomic_variables import world_bank as wb
+from macroeconomic_variables import imf
 
 
 # 주 실행 스크립트 시작점
@@ -12,15 +12,28 @@ if __name__ == '__main__':
     start_date = datetime(2010, 1, 1)
     end_date = datetime.today()
     
-    # World Bank에서 GDP 데이터 가져오기
-    dataset = "NY.GDP.MKTP.CD"
-    name = 'GDP'
-    gdp_data = wb.get_data(dataset, start_date, end_date, name)
-    
-    # KOSIS에서 전산업생산지수 데이터 가져오기
     # KOSIS API 인증키를 읽어옴
     keys = pd.read_csv('/home/yeeun/skku/Graduate/TSF-PI/Key.csv', index_col=0)
     service_key = keys.loc['Kosis', 'Key']
+    
+    # KOSIS에서 분기 GDP 데이터 가져오기
+    orgId = "301"
+    tblId = 'DT_200Y002'
+    freq = 'Q'
+    gdp_data = kosis.get_data(service_key, orgId, tblId, freq, start_date, end_date, 'GDP')
+    
+    
+    # IMF에서 연간 GDP 예상 데이터 가져오기
+    indicators = {'NGDP_RPCH': 'GDP'}
+    countries = ['KOR']
+    periods = [str(end_date.year)]
+    gdp_predict = imf.get_data(indicators=indicators, countries=countries, periods=periods)['KOR']
+    gdp_predict['GDP'] = gdp_predict['GDP'].apply(lambda x: round(x / 4, 2)) # 연도 -> 분기로 나눔
+    
+    # GDP 데이터 합치기
+    gdp_data = pd.concat([gdp_data, gdp_predict])
+    
+    # KOSIS에서 전산업생산지수 데이터 가져오기
     
     # KOSIS API의 기타 설정
     orgId = "101"

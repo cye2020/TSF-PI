@@ -4,10 +4,10 @@ from typing import Literal
 from datetime import datetime, timedelta
 
 def get_data(
-        service_key: Literal, 
-        orgId: Literal, tblId: Literal, 
-        freq: Literal, start_date: datetime, end_date: datetime,
-        name: Literal = 'Value'
+        service_key: str, 
+        orgId: str, tblId: str, 
+        freq: str, start_date: datetime, end_date: datetime,
+        name: str = 'Value'
     ):
     # 인스턴스 생성하기
     api = Kosis(service_key)
@@ -26,10 +26,12 @@ def get_data(
     
     data = df[['수록시점', '수치값']]
     data.columns = ['Date', name]
+    
+    if freq == 'Q':
+        data.loc[:, 'Date'] = data['Date'].apply(lambda x: x[:-2] + str(3 * int(x[-1]) - 2))
     data.loc[:, 'Date'] = pd.to_datetime(data['Date'], format='%Y%m')
     data = data.drop_duplicates(subset=['Date'])
     data.set_index('Date', inplace=True)
-    
     return data
 
 
