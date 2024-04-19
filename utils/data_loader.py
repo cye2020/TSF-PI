@@ -12,10 +12,6 @@ class CustomDataLoader:
     def load_csv(self, path: str, features: list, split_date: str, with_datelist=True, change=False):
         df = pd.read_csv(path)
         df = df[features]
-        
-        if change:
-            df['Kospi'] = df['Kospi'].pct_change() * 100
-            df.loc[0, 'Kospi'] = 0
 
         date_list = list(df['Date'])
         date_list = [datetime.strptime(date, '%Y-%m-%d').date() for date in date_list]
