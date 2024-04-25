@@ -10,7 +10,7 @@ class CNN(nn.Module):
         super(CNN, self).__init__()
         
         modules = []
-        input_length = input_shape[1]
+        input_length = input_shape[2]
         
         for conv_layer in conv_layers:
             input_channels = conv_layer['input_channels']
@@ -56,7 +56,7 @@ class CNN(nn.Module):
 
 
 if __name__ =='__main__':
-    input_shape = (7, 30)
+    input_shape = (1, 7, 30) # batch size, number of features, input dimensions
     
     conv_layers = [
         {'input_channels': 7, 'output_channels': 64, 'kernel_size': 2, 'pool_size': 2, 'stride': 1 , 'activation': 'relu'},
